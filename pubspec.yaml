@@ -1,6 +1,6 @@
 name: weather_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -16,4 +16,8 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
+  assets:
+    - assets/icons/
+    - assets/backgrounds/
+    - assets/images/
   uses-material-design: true
