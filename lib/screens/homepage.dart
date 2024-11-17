@@ -6,36 +6,26 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+    return Container(
+      // padding: EdgeInsets.all(0),
+      decoration: const BoxDecoration(
+        image: DecorationImage(image: AssetImage('assets/backgrounds/bg.jpg')),
       ),
-      bottomNavigationBar: const _BottomNav(),
-      body: Container(
-        // padding: EdgeInsets.all(0),
-        decoration: const BoxDecoration(
-          image:
-              DecorationImage(image: AssetImage('assets/backgrounds/bg.jpg')),
+      child: const Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(),
+            _HeroDisplay(),
+            Image(image: AssetImage('assets/images/house.png')),
+            SizedBox(),
+          ],
         ),
-        child: const Stack(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(),
-              _HeroDisplay(),
-              Image(image: AssetImage('assets/images/house.png')),
-              SizedBox(),
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _ForeCastView(),
-          ),
-        ]),
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _ForeCastView(),
+        ),
+      ]),
     );
   }
 }
@@ -71,37 +61,6 @@ class _HeroDisplay extends StatelessWidget {
                 .copyWith(fontWeight: FontWeight.bold)),
       ],
     );
-  }
-}
-
-class _BottomNav extends StatefulWidget {
-  const _BottomNav();
-
-  @override
-  State<_BottomNav> createState() => _BottomNavState();
-}
-
-class _BottomNavState extends State<_BottomNav> {
-  int currentPageIndex = 0;
-  @override
-  Widget build(BuildContext context) {
-    return NavigationBar(
-        onDestinationSelected: (value) => setState(() {
-              currentPageIndex = value;
-            }),
-        selectedIndex: currentPageIndex,
-        destinations: const [
-          NavigationDestination(
-              icon: Icon(Icons.location_on), label: "Location"),
-          NavigationDestination(
-            icon: Icon(Icons.add),
-            label: "Add",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.menu),
-            label: "Menu",
-          )
-        ]);
   }
 }
 
