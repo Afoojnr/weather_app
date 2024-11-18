@@ -17,13 +17,14 @@ class _AppLayoutState extends State<AppLayout> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: currentPageIndex == 1
-          ? AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            )
+          ? null
+          // AppBar(
+          //     elevation: 0,
+          //     backgroundColor: Colors.transparent,
+          //   )
           : AppBar(
               title: const Text('Weather'),
               backgroundColor: theme.colorScheme.primary,

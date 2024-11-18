@@ -18,6 +18,7 @@ class WeatherApp extends StatelessWidget {
             brightness: Brightness.dark,
             seedColor: const Color(0xff1f1d47),
             primary: const Color(0xff1f1d47),
+            // primaryContainer: 
           ),
         ));
   }
