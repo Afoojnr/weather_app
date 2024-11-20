@@ -17,16 +17,63 @@ class LocationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: LocationCardClipper(),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            gradient: const LinearGradient(
-                colors: [Color(0xff5936B4), Color(0xff362A84)])),
+    final theme = Theme.of(context);
+    return Stack(children: [
+      ClipPath(
+        clipper: LocationCardClipper(),
+        child: Container(
+          height: 200,
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              gradient: const LinearGradient(
+                  colors: [Color(0xff5936B4), Color(0xff362A84)])),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(),
+              Text(
+                "19°",
+                style: theme.textTheme.displayLarge!
+                    .copyWith(fontWeight: FontWeight.w400),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("H:24°C L:18°C",
+                      style: theme.textTheme.bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w300)),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Montreal Canada",
+                          style: theme.textTheme.bodyLarge!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      Text("Mid Rain",
+                          style: theme.textTheme.bodyMedium!
+                              .copyWith(fontWeight: FontWeight.w500))
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
-    );
+      const Positioned(
+        top: -10,
+        right: 5,
+        child: Image(
+          image: AssetImage('assets/icons/mcmr.png'),
+          width: 180,
+          height: 180,
+        ),
+      ),
+    ]);
   }
 }
 
