@@ -7,7 +7,6 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: EdgeInsets.all(0),
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage('assets/backgrounds/bg.jpg')),
       ),
@@ -41,9 +40,7 @@ class _HeroDisplay extends StatelessWidget {
       children: [
         Text(
           "Montreal",
-          style: theme.textTheme.displaySmall!
-          // .copyWith(color: theme.colorScheme.primary)
-          ,
+          style: theme.textTheme.displaySmall!,
         ),
         SizedBox(
           height: 100,
@@ -164,9 +161,7 @@ class _ForeCastItem extends StatelessWidget {
       width: 60,
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        // color: Colors.transparent,
         color: isActive ? const Color(0xFF48319D) : Colors.transparent,
-
         border: Border.all(color: Colors.grey, width: 0.3),
         borderRadius: BorderRadius.circular(50),
         boxShadow: const [
@@ -183,7 +178,7 @@ class _ForeCastItem extends StatelessWidget {
         children: [
           Text("12 AM"),
           Image(
-            image: AssetImage('assets/icons/mcfw.png'),
+            image: AssetImage('assets/icons/small/mcfw.png'),
             width: 35,
             height: 35,
           ),

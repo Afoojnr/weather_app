@@ -5,9 +5,47 @@ class Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: LocationCard(),
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        children: [
+          TextField(
+            onChanged: null,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              hintText: "Search for a city of airport",
+              filled: true,
+              fillColor: theme.colorScheme.primary,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none),
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          const Expanded(child: LocationListView()),
+        ],
+      ),
+    );
+  }
+}
+
+class LocationListView extends StatelessWidget {
+  const LocationListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> entries = <String>['A', 'B', 'C', 'C'];
+    return ListView.separated(
+      itemCount: entries.length,
+      itemBuilder: (context, index) {
+        return const LocationCard();
+      },
+      separatorBuilder: (context, index) => const SizedBox(
+        height: 20,
+      ),
     );
   }
 }
@@ -68,7 +106,7 @@ class LocationCard extends StatelessWidget {
         top: -10,
         right: 5,
         child: Image(
-          image: AssetImage('assets/icons/mcmr.png'),
+          image: AssetImage('assets/icons/big/mcmr.png'),
           width: 180,
           height: 180,
         ),
