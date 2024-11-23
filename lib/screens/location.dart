@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/providers/weather_provider.dart';
 
 class Location extends StatelessWidget {
   const Location({super.key});
@@ -37,11 +39,16 @@ class LocationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> entries = <String>['A', 'B', 'C', 'C'];
+    final citiesData = context.watch<WeatherProvider>().allCitiesWeather;
+
     return ListView.separated(
-      itemCount: entries.length,
+      itemCount: citiesData.length,
       itemBuilder: (context, index) {
-        return const LocationCard();
+        return LocationCard(
+            cityName: citiesData[index].cityName as String,
+            apparentTemperature: citiesData[index].apparentTemperature.toInt(),
+            temperature: citiesData[index].temperature.toInt(),
+            rain: citiesData[index].rain.toInt());
       },
       separatorBuilder: (context, index) => const SizedBox(
         height: 20,
@@ -51,8 +58,17 @@ class LocationListView extends StatelessWidget {
 }
 
 class LocationCard extends StatelessWidget {
-  const LocationCard({super.key});
+  const LocationCard(
+      {super.key,
+      required this.cityName,
+      required this.apparentTemperature,
+      required this.temperature,
+      required this.rain});
 
+  final String cityName;
+  final int temperature;
+  final int rain;
+  final int apparentTemperature;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -72,14 +88,14 @@ class LocationCard extends StatelessWidget {
             children: [
               const SizedBox(),
               Text(
-                "19°",
+                "$temperature°",
                 style: theme.textTheme.displayLarge!
                     .copyWith(fontWeight: FontWeight.w400),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("H:24°C L:18°C",
+                  Text("H:$temperature°C L:$apparentTemperature°C",
                       style: theme.textTheme.bodyMedium!
                           .copyWith(fontWeight: FontWeight.w300)),
                   const SizedBox(
@@ -88,10 +104,10 @@ class LocationCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Montreal Canada",
+                      Text(cityName,
                           style: theme.textTheme.bodyLarge!
                               .copyWith(fontWeight: FontWeight.w500)),
-                      Text("Mid Rain",
+                      Text(rain > 0 ? "Mid Rain" : "Clear",
                           style: theme.textTheme.bodyMedium!
                               .copyWith(fontWeight: FontWeight.w500))
                     ],
