@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'package:weather_app/providers/weather_provider.dart';
+import 'package:provider/provider.dart';
+
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
@@ -35,11 +38,13 @@ class _HeroDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final currentWeatherData = context.watch<WeatherProvider>().currentWeather;
+    // final citiesData = context.watch<WeatherProvider>().allCitiesWeather;
 
     return Column(
       children: [
         Text(
-          "Montreal",
+          currentWeatherData.city.name,
           style: theme.textTheme.displaySmall!,
         ),
         SizedBox(
@@ -47,13 +52,15 @@ class _HeroDisplay extends StatelessWidget {
           // width: 120,
           child: FittedBox(
             fit: BoxFit.fill,
-            child: Text("19°",
+            child: Text("${currentWeatherData.temperature.toInt()}°",
                 style: theme.textTheme.displayLarge!
                     .copyWith(fontWeight: FontWeight.w300)),
           ),
         ),
-        Text("Mostly Clear", style: theme.textTheme.bodyLarge!.copyWith()),
-        Text("H:24°C L:18°C",
+        Text(currentWeatherData.rain > 0 ? "Mid Rain" : "Mostly Clear",
+            style: theme.textTheme.bodyLarge!.copyWith()),
+        Text(
+            "H:${currentWeatherData.temperature.toInt()}°C L:${currentWeatherData.apparentTemperature.toInt()}°C",
             style: theme.textTheme.bodyMedium!
                 .copyWith(fontWeight: FontWeight.bold)),
       ],

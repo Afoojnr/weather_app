@@ -9,12 +9,17 @@ import 'package:weather_app/models/weather.dart';
 class WeatherServices {
   static const baseUrl = 'https://api.open-meteo.com/v1/forecast?';
 
-  static Future<CurrentWeather> getCurrentWeather(num lat, num lon) async {
+  static Future<CurrentWeather> getCurrentWeather(
+      double lat, double lon, String cityName) async {
     final url =
         "${baseUrl}latitude=$lat&longitude=$lon&current=temperature_2m,apparent_temperature,rain&timezone=auto";
     final res = await _fetchData(url);
-
-    return CurrentWeather.fromJson(res);
+    return CurrentWeather(
+      temperature: res["current"]["temperature_2m"],
+      apparentTemperature: res["current"]["apparent_temperature"],
+      rain: res["current"]["rain"],
+      city: City(name: cityName, lat: lat, lon: lon),
+    );
   }
 
   static Future<List<CurrentWeather>> getAllCitiesWeather() async {
@@ -45,16 +50,9 @@ class WeatherServices {
             temperature: data["current"]["temperature_2m"],
             apparentTemperature: data["current"]["apparent_temperature"],
             rain: data["current"]["rain"],
-            cityName: city.name,
+            city: City(name: city.name, lat: city.lat, lon: city.lon),
           ));
         }
-        // for (var data in res) {
-        //   allCitiesWeather.add(CurrentWeather.fromJson(data));
-        // }
-        //  for (var city in cities) {
-        //   // allCitiesWeather
-        // }
-        // debugPrint("$allCitiesWeather");
 
         return allCitiesWeather;
       } else {
@@ -65,29 +63,7 @@ class WeatherServices {
       debugPrint('Error fetching data from $url: $e');
       throw Exception('Error fetching data');
     }
-//     final res = await _fetchData(url);
-//     debugPrint("$res");
-
-//    for (var data in res)
-// {
-
-// }    return CurrentWeather(temperature: 10, rain: 10, apparentTemperature: 4);
   }
-
-//   static buildCurrentWeatherUrl() {
-//     var latitudes = [];
-//     var longitudes = [];
-
-//     for (var city in cities) {
-//       latitudes.add("${city.lat}");
-//       longitudes.add("${city.lon}");
-//     }
-//     var latString = latitudes.join(',');
-//     // print(latString);
-//     var lonString = longitudes.join(',');
-// // debugPrint()
-//     return "${baseUrl}latitude=$latString&longitude=$lonString&current=temperature_2m,apparent_temperature,rain&timezone=auto";
-//   }
 
   static Future<Map<String, dynamic>> _fetchData(String url) async {
     try {

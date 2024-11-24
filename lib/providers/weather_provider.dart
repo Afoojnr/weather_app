@@ -9,10 +9,22 @@ class WeatherProvider extends ChangeNotifier {
   CurrentWeather get currentWeather => _currentWeather;
   List<CurrentWeather> _allCitiesWeather = [];
   List<CurrentWeather> get allCitiesWeather => _allCitiesWeather;
+  bool isLoading = false;
 
-  Future<void> getCurrentWeather(num lat, num lon) async {
-    final data = await WeatherServices.getCurrentWeather(lat, lon);
+  Future<void> getCurrentWeather(
+      double lat, double lon, String cityName) async {
+    isLoading = true;
+    notifyListeners();
+
+    final data = await WeatherServices.getCurrentWeather(lat, lon, cityName);
     _currentWeather = data;
+    isLoading = false;
+
+    notifyListeners();
+  }
+
+  Future<void> setCurrentWeather(CurrentWeather current) async {
+    _currentWeather = current;
     notifyListeners();
   }
 
@@ -23,7 +35,7 @@ class WeatherProvider extends ChangeNotifier {
   }
 
   WeatherProvider() {
-    getCurrentWeather(cities.first.lat, cities.first.lon);
+    getCurrentWeather(cities.first.lat, cities.first.lon, cities.first.name);
     getAllCitiesWeather();
   }
 }

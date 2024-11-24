@@ -39,21 +39,31 @@ class LocationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final citiesData = context.watch<WeatherProvider>().allCitiesWeather;
+    final readWeaterState = context.read<WeatherProvider>();
+    final watchWeaterState = context.watch<WeatherProvider>();
+    final isLoading = watchWeaterState.isLoading;
+    final citiesData = watchWeaterState.allCitiesWeather;
 
-    return ListView.separated(
-      itemCount: citiesData.length,
-      itemBuilder: (context, index) {
-        return LocationCard(
-            cityName: citiesData[index].cityName as String,
-            apparentTemperature: citiesData[index].apparentTemperature.toInt(),
-            temperature: citiesData[index].temperature.toInt(),
-            rain: citiesData[index].rain.toInt());
-      },
-      separatorBuilder: (context, index) => const SizedBox(
-        height: 20,
-      ),
-    );
+    return isLoading
+        ? const CircularProgressIndicator.adaptive()
+        : ListView.separated(
+            itemCount: citiesData.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () =>
+                    readWeaterState.setCurrentWeather(citiesData[index]),
+                child: LocationCard(
+                    cityName: citiesData[index].city.name,
+                    apparentTemperature:
+                        citiesData[index].apparentTemperature.toInt(),
+                    temperature: citiesData[index].temperature.toInt(),
+                    rain: citiesData[index].rain.toInt()),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 20,
+            ),
+          );
   }
 }
 
@@ -107,7 +117,7 @@ class LocationCard extends StatelessWidget {
                       Text(cityName,
                           style: theme.textTheme.bodyLarge!
                               .copyWith(fontWeight: FontWeight.w500)),
-                      Text(rain > 0 ? "Mid Rain" : "Clear",
+                      Text(rain > 0 ? "Mid Rain" : "Mostly Clear",
                           style: theme.textTheme.bodyMedium!
                               .copyWith(fontWeight: FontWeight.w500))
                     ],
