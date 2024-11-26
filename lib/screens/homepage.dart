@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/utils.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -78,6 +79,8 @@ class _ForeCastView extends StatefulWidget {
 class __ForeCastViewState extends State<_ForeCastView> {
   @override
   Widget build(BuildContext context) {
+    final hourlyWeather = context.watch<WeatherProvider>().hourlyWeather;
+
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
@@ -126,29 +129,42 @@ class __ForeCastViewState extends State<_ForeCastView> {
               const SizedBox(
                 height: 15,
               ),
-              const Row(
-                children: [
-                  _ForeCastItem(),
-                  SizedBox(
-                    width: 12,
+              Row(children: [
+                // for (var i = 0; i < 5; i++) _ForeCastItem(),
+                // _ForeCastItem(),
+                // _ForeCastItem(),
+                // _ForeCastItem(),
+
+                // SizedBox(
+                //   height: 140,
+                //   child: ListView(
+                //     scrollDirection: Axis.horizontal,
+                //     shrinkWrap: true,
+                //     children: [
+                //       _ForeCastItem(),
+                //       _ForeCastItem(),
+                //       _ForeCastItem(),
+                //       _ForeCastItem(),
+                //     ],
+                //   ),
+                // )
+                SizedBox(
+                  height: 140,
+                  width: 350,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: hourlyWeather.temperature.length,
+                    itemBuilder: (context, index) => _ForeCastItem(
+                      temperature: hourlyWeather.temperature[index].toInt(),
+                      time: hourlyWeather.time[index],
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 12,
+                    ),
                   ),
-                  _ForeCastItem(
-                    isActive: true,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  _ForeCastItem(),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  _ForeCastItem(),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  _ForeCastItem(),
-                ],
-              )
+                ),
+              ])
             ],
           ),
         ),
@@ -159,7 +175,10 @@ class __ForeCastViewState extends State<_ForeCastView> {
 
 class _ForeCastItem extends StatelessWidget {
   final bool isActive;
-  const _ForeCastItem({this.isActive = false});
+  final String time;
+  final int temperature;
+  const _ForeCastItem(
+      {this.isActive = false, required this.time, required this.temperature});
 
   @override
   Widget build(BuildContext context) {
@@ -180,16 +199,16 @@ class _ForeCastItem extends StatelessWidget {
               blurStyle: BlurStyle.outer)
         ],
       ),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("12 AM"),
-          Image(
+          Text(extractHour(time)),
+          const Image(
             image: AssetImage('assets/icons/small/mcfw.png'),
             width: 35,
             height: 35,
           ),
-          Text("19°")
+          Text("$temperature°")
         ],
       ),
     );

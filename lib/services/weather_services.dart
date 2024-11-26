@@ -22,6 +22,20 @@ class WeatherServices {
     );
   }
 
+  static Future<HourlyWeather> getHourlyWeather(double lat, double lon) async {
+    final url =
+        "${baseUrl}latitude=$lat&longitude=$lon&hourly=temperature_2m,rain&timezone=auto";
+    final res = await _fetchData(url);
+    return HourlyWeather.fromJson(res);
+  }
+
+  static Future<DailyWeather> getDailyWeather(double lat, double lon) async {
+    final url =
+        "${baseUrl}latitude=$lat&longitude=$lon&daily=temperature_2m_max,rain_sum&timezone=auto";
+    final res = await _fetchData(url);
+    return DailyWeather.fromJson(res);
+  }
+
   static Future<List<CurrentWeather>> getAllCitiesWeather() async {
     List<String> latitudes = [];
     List<String> longitudes = [];
